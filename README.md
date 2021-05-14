@@ -10,7 +10,7 @@
 
 ## Para enviar mensagens privadas para um determinado usuário digite o seguinte comando no client:
 
-/p <id do usuário> <mensagem>
+/p [id do usuário] [mensagem]
 
 Exemplo: /p renato Olá renato
 
