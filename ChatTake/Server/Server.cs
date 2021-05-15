@@ -90,7 +90,7 @@ namespace Server
             Console.WriteLine("new user connected...");
             NetworkStream stream = clientSocket.GetStream();
             client = new Client(stream, clientSocket);
-            Task userName = Task.Run(() => CheckDuplicatedUser(stream, client));
+            Task userName = Task.Run(() => CheckDuplicatedUser(client));
         }
 
         /// gerencia a fila de mensagens
@@ -101,8 +101,10 @@ namespace Server
                 Message message = default(Message);
                 if (queueMessage.TryDequeue(out message)) // remove uma mensagem da fila
                 {
-                    if (message.MessageBody.StartsWith("/p")) // caso a mensagem iniciar com '/p' essa mensagem será enviada de forma privada ao usuário definido após caracter de espaço, logo a frente do '/p'
+                    if (message.MessageBody.StartsWith("/p ")) // caso a mensagem iniciar com '/p' essa mensagem será enviada de forma privada ao usuário definido após caracter de espaço, logo a frente do '/p'
                     {
+                        if (message.MessageBody.Split().Count() <= 0)
+                            continue;
                         lock (dictLock) 
                         {
                             string userIdFound = message.MessageBody.Split()[1];
@@ -113,7 +115,7 @@ namespace Server
                                 {
                                     if (privateSender.Key == userIdFound)
                                     {
-                                        privateSender.Value.Send($"[{DateTime.Now.ToString("HH:mm:ss")}] {message.Sender.UserId}: {message.MessageBody}"); // envia a mensagem apenas ao usuário privado
+                                        message.MessageBody = message.MessageBody.Split()[2];                                        privateSender.Value.Send($"[{DateTime.Now.ToString("HH:mm:ss")}] {message.Sender.UserId}: {message.MessageBody}"); // envia a mensagem apenas ao usuário privado
                                         log.Log($"[{DateTime.Now.ToString("HH:mm:ss")}] {message.Sender.UserId} '\\p' to {userIdFound} >> {message.MessageBody}"); // grava a mensagem no arquivo de log
                                     }
                                 }
@@ -169,7 +171,7 @@ namespace Server
         }
 
         /// verifica se já existe um usuário com o nome informado
-        private void CheckDuplicatedUser(NetworkStream stream, Client client)
+        private void CheckDuplicatedUser(Client client)
         {
             client.SetUserName();
             lock (dictLock)
