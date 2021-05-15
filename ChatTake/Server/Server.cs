@@ -1,18 +1,16 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Server
 {
 
-   // responsável por administrar as conexões e as mensagens do server
+    // responsável por administrar as conexões e as mensagens do server
     public class Server
     {
 
@@ -69,7 +67,7 @@ namespace Server
             {
                 try
                 {
-                     
+
                     TcpClient clientSocket = default(TcpClient);
                     clientSocket = server.AcceptTcpClient();
                     Thread clientThread = new Thread(() => AcceptClient(clientSocket));
@@ -105,7 +103,7 @@ namespace Server
                     {
                         if (message.MessageBody.Split().Count() <= 0)
                             continue;
-                        lock (dictLock) 
+                        lock (dictLock)
                         {
                             string userIdFound = message.MessageBody.Split()[1];
                             bool hasUserID = IsSearchForUserOnline(userIdFound);
@@ -115,7 +113,7 @@ namespace Server
                                 {
                                     if (privateSender.Key == userIdFound)
                                     {
-                                        message.MessageBody = message.MessageBody.Split()[2];                                        privateSender.Value.Send($"[{DateTime.Now.ToString("HH:mm:ss")}] {message.Sender.UserId}: {message.MessageBody}"); // envia a mensagem apenas ao usuário privado
+                                        message.MessageBody = message.MessageBody.Split()[2]; privateSender.Value.Send($"[{DateTime.Now.ToString("HH:mm:ss")}] {message.Sender.UserId}: {message.MessageBody}"); // envia a mensagem apenas ao usuário privado
                                         log.Log($"[{DateTime.Now.ToString("HH:mm:ss")}] {message.Sender.UserId} '\\p' to {userIdFound} >> {message.MessageBody}"); // grava a mensagem no arquivo de log
                                     }
                                 }
@@ -124,7 +122,7 @@ namespace Server
                     }
                     else
                     {
-                        lock (dictLock) 
+                        lock (dictLock)
                         {
                             foreach (KeyValuePair<string, Client> keyValue in connectedClients)
                             {

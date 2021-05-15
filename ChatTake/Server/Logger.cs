@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.IO;
-using System.Text;
-using System.Threading.Tasks;
-using System.Configuration;
 
 namespace Server
 {
@@ -15,7 +10,7 @@ namespace Server
 
         public Logger(string logFileName)
         {
-            if(String.IsNullOrEmpty(logFileName))
+            if (String.IsNullOrEmpty(logFileName))
                 throw new Exception("LOGFILE config parameter is required.");
             this.logFileName = logFileName;
         }

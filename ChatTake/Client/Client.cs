@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
@@ -27,7 +26,7 @@ namespace Client
                     clientSocket.Connect(IPAddress.Parse(host), port); // Conecta ao socket  
 
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     Console.WriteLine($"Server {host}:{port} not found...");
                     Thread.Sleep(5000);
@@ -48,7 +47,7 @@ namespace Client
                 Task send = Task.Run(() => Send()); // executa o método responsável por monitorar as mensagens enviadas
                 Task receive = Task.Run(() => Receive()); // executa o método responsável por monitorar as mensagens enviadas
                 receive.Wait(); // aguarda as threads
-                
+
                 clientSocket.Close();
                 Console.WriteLine("Disconnected.");
                 Console.ReadKey();
