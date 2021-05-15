@@ -17,6 +17,6 @@
 
 /p [id do usuário] [mensagem]
 
-Exemplo: /p renato Olá renato
+Exemplo: /p renato Sucesso!
 
 
