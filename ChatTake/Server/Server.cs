@@ -97,7 +97,7 @@ namespace Server
             while (isConnected == true)
             {
                 Message message = default(Message);
-                if (queueMessage.TryDequeue(out message)) // remove uma mensagem da fila
+                if (queueMessage.TryDequeue(out message)) // Tenta remover e retornar o objeto no início da fila.
                 {
                     if (message.MessageBody.StartsWith("/p ")) // caso a mensagem iniciar com '/p' essa mensagem será enviada de forma privada ao usuário definido após caracter de espaço, logo a frente do '/p'
                     {
